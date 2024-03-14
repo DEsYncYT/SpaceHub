@@ -3,7 +3,7 @@ package org.example;
 import java.util.Comparator;
 import java.util.Objects;
 
-public class SpaceShip implements Comparator<SpaceShip> {
+public class SpaceShip{
     private  final static  double  max_fuel = 2000;
     private final static double fuel_consumption = 3.58;
     private static Long idCounter = 100L;
@@ -22,6 +22,9 @@ public class SpaceShip implements Comparator<SpaceShip> {
         setHomeBase(homeBase);
         idCounter++;
         id = idCounter;
+    }
+
+    public SpaceShip() {
     }
 
     public Long getId() {
@@ -118,10 +121,6 @@ public class SpaceShip implements Comparator<SpaceShip> {
         }
     }
 
-    @Override
-    public int compare(SpaceShip o1, SpaceShip o2) {
-        return o1.getId().compareTo(o2.getId());
-    }
 
     @Override
     public boolean equals(Object o) {
