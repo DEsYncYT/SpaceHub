@@ -70,11 +70,10 @@ public class SpaceShip{
             throw new IllegalArgumentException(fuel + " Darf keinen negativen Wert haben");
         } else {
             if (fuelAddierer > max_fuel) {
-                fuel = max_fuel;
+                this.fuel = max_fuel;
                 System.out.println("fuel insgesamt " + fuel);
-                //throw new IllegalArgumentException(fuelAddierer + "Die Maximalmenge von 2000 darf nicht überschritten werden");
             } else {
-                fuel = fuelAddierer;
+                this.fuel = fuelAddierer;
             }
         }
     }
@@ -94,6 +93,8 @@ public class SpaceShip{
     public void setDockingBase(SpaceBase dockingBase) {
         if(dockingBase == homeBase){
             refuel(max_fuel);
+        } else {
+            this.dockingBase = dockingBase;
         }
     }
 

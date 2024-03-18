@@ -2,8 +2,8 @@ package org.example;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 public class SpaceBase{
 
@@ -12,10 +12,13 @@ public class SpaceBase{
     private int posY;
     private ArrayList<SpaceShip> shipList;
 
+
+
     public SpaceBase(String name, int posX, int posY) {
         setName(name);
         setPosX(posX);
         setPosY(posY);
+        shipList = new ArrayList<>();
     }
 
     public SpaceBase() {
@@ -50,50 +53,50 @@ public class SpaceBase{
     }
 
     public boolean docking(SpaceShip spaceShip) {
-        if (spaceShip == null) {
-            throw new NullPointerException("spaceShip ist nicht initialisiert");
+        if(spaceShip == null){
+            throw new NullPointerException("Wurde nicht initialisiert");
         } else {
-            if (shipList.contains(spaceShip)) {
-                throw new IllegalArgumentException("spaceShip ist bereits in der Liste vorhanden");
+            if(shipList.contains(spaceShip)) {
+                throw new IllegalArgumentException("Befindet sich bereits in der Liste");
             } else {
-                spaceShip.setDockingBase(this);
                 return shipList.add(spaceShip);
             }
         }
     }
 
-    public SpaceShip moveShipToSpaceBase(int id, SpaceBase spaceBase) {
+    public SpaceShip moveShipToSpaceBase(Long id, SpaceBase spaceBase) {
         if (id == 0 || spaceBase == null) {
             return null;
-        }
-
-        SpaceShip ship = null;
-        for (int i = 0; i < shipList.size(); i++) {
-            if (shipList.get(i).getId() == id) {
-                ship = shipList.remove(i);
-                break;
+        } else {
+            SpaceShip ship = null;
+            for (int i = 0; i < shipList.size(); i++) {
+                if (shipList.get(i).getId().equals(id)) {
+                    ship = shipList.remove(i);
+                    break;
+                } else {
+                    if (ship != null) {
+                        ship.moveTo(spaceBase.getPosX(), spaceBase.getPosY());
+                        spaceBase.docking(ship);
+                        return ship;
+                    }
+                }
             }
+            arrangeShips();
+            return ship;
         }
-
-        if (ship != null) {
-            ship.moveTo(spaceBase.getPosX(), spaceBase.getPosY());
-            spaceBase.docking(ship);
-        }
-
-        arrangeShips();
-
-        return ship;
     }
 
-    public ArrayList<SpaceShip> arrangeShips() {
-        List<SpaceShip> sortedShips = Collections.unmodifiableList(shipList);
-        List sortierteShips = new ArrayList(sortedShips);
-        Collections.sort(sortierteShips);
-        return (ArrayList<SpaceShip>) sortedShips;
+    public List<SpaceShip> arrangeShips() {
+        ArrayList<SpaceShip> sortedShips = shipList;
+        ArrayList sorterShips = new ArrayList(sortedShips);
+        Collections.sort(sorterShips);
+        return  sortedShips;
     }
 
     public void arrangeShipsByFuel(){
         shipList.sort(new FuelComparator());
     }
+
+
 
 }
